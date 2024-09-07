@@ -59,6 +59,12 @@ export default class CheckBoxSoundEffect extends Plugin {
 		await this.saveData(this.settings);
 	}
 
+	async resetSettings() {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS);
+		this.audio.src = this.settings.soundEffectUrl; // Reset audio source
+		await this.saveSettings();
+	}
+
 	onunload() {
 		this.audio.pause();
 		this.observers.forEach((observer) => observer.disconnect());
@@ -96,26 +102,37 @@ class CheckBoxSoundEffectSettingTab extends PluginSettingTab {
 						}
 					})
 			)
-			// Adding an icon to toggle play/pause audio
+			// Adding icons to toggle play/pause audio
 			.addExtraButton((extraButton) => {
-				// Initial icon set to "play-circle"
-				extraButton.setIcon("play-circle")
-					.setTooltip("Play Audio")
+				extraButton.setIcon(this.plugin.isPlaying ? "pause-circle" : "play-circle")
+					.setTooltip(this.plugin.isPlaying ? "Pause Audio" : "Play Audio")
 					.onClick(async () => {
 						if (this.plugin.isPlaying) {
-							// Pause the audio and change the icon to "play"
 							this.plugin.audio.pause();
 							this.plugin.isPlaying = false;
 							extraButton.setIcon("play-circle");
 							extraButton.setTooltip("Play Audio");
 						} else {
-							// Play the audio and change the icon to "pause"
 							this.plugin.audio.play().catch((error) => {
 								new Notice(`Error playing audio: ${error}`);
 							});
 							this.plugin.isPlaying = true;
 							extraButton.setIcon("pause-circle");
 							extraButton.setTooltip("Pause Audio");
+						}
+					});
+			})
+			// Adding Reset to Default button
+			.addExtraButton((extraButton) => {
+				extraButton.setIcon("refresh-cw") // Use the refresh icon
+					.setTooltip("Reset to Default")
+					.onClick(async () => {
+						try {
+							await this.plugin.resetSettings();
+							new Notice("Settings reset to default.");
+						} catch (error) {
+							new Notice("Failed to reset settings.");
+							console.error("Failed to reset settings:", error);
 						}
 					});
 			});
