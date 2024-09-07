@@ -12,6 +12,8 @@ A plugin for Obsidian that adds sound effects when checking checkboxes.
 2. Create tasks
 3. Complete them (This part is required to enjoy the sound effect 😆)
 
+> **_NOTE:_**  It only works in reading mode.
+
 ## Contributing
 Contributions are welcome! If you have suggestions for improvements or new features, please open an issue or submit a pull request.
 
