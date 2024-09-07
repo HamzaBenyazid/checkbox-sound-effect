@@ -1,6 +1,6 @@
 {
 	"id": "checkbox-sound-effect",
-	"name": "Checkbox-sound-effect",
+	"name": "Checkbox Sound Effect",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Add sound effects when checking checkboxes",
